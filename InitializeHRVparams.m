@@ -100,6 +100,17 @@ switch project_name
         HRVparams.readdata = strcat('TestData', filesep, 'mitdb-Arrhythmia');
         HRVparams.writedata = strcat('OutputData', filesep, 'ResultsPVC');
         HRVparams.Fs = 360;
+    case 'shimmer'      % Parameters for HRT demo 
+        %HRVparams.readdata = strcat('TestData', filesep, 'Physionet_nsr2db');
+        HRVparams.writedata = 'HRV_Output';
+        HRVparams.Fs = 202;
+        HRVparams.gen_figs = 1;
+        HRVparams.MSE.windowlength = 1;
+    case 'bioharness'      % Parameters for HRT demo 
+        %HRVparams.readdata = strcat('TestData', filesep, 'Physionet_nsr2db');
+        HRVparams.writedata = 'HRV_Output';
+        HRVparams.Fs = 250;
+        HRVparams.gen_figs = 1;
     otherwise                  % Default
         HRVparams.Fs = NaN;                          % Spacify sampling frequency
         HRVparams.writedata = 'HRV_Output';          % (Optional) Specify name for data output folder

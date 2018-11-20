@@ -229,6 +229,7 @@ switch HRVparams.preprocess.method_unphysio
     case 'rem'
         NN_NonPhysBeats(idx_toolow) = [];
         t_NonPhysBeats = t_Outliers;
+        t_NonPhysBeats_old = t_NonPhysBeats;
         t_NonPhysBeats(idx_toolow) = []; % Review this line of code for improvement
     otherwise % use cubic spline interpoletion as default
         NN_NonPhysBeats = interp1(t_Outliers,NN_NonPhysBeats,t_Outliers,'pchip');
@@ -238,7 +239,9 @@ end
 if figures
     hold on;
     plot(t_NonPhysBeats,NN_NonPhysBeats+.01);
-    hold on; plot(t_NonPhysBeats,toolow,'o')
+    if length(toolow)==length(t_NonPhysBeats_old)
+        hold on; plot(t_NonPhysBeats_old,toolow,'o')
+    end
     legend('raw','interp1(after outliers removed)',...
         'interp2(after too low)','toolow')
 end

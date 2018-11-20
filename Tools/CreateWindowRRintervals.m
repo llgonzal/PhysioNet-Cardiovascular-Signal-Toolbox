@@ -83,15 +83,24 @@ switch option
         end
             
 end
+if isempty(NN)
+    NN = HRVparams.NN;
+    tNN = HRVparams.tNN;
 
-nx = floor(tNN(end));               % length of sequence
+end
+
+if isempty(NN)
+    print('ERROR NN is empty. Please set HRVparams.NN and HRVparams.tNN');
+end
+
+nx = floor(tNN(end)- tNN(1,1));             % length of sequence
 overlap = windowlength-increment;   % number of overlapping elements
 Nwinds = fix((nx-overlap)/(windowlength-overlap));    % number of sliding windows
 % Initialize output matrix
 windowRRintervals = (0:(Nwinds-1))*(windowlength-overlap);  % starting index of each windows
 
 % Initialize loop variables
-t_window_start = 0;     % Window Start Time
+t_window_start = tNN(1,1);     % Window Start Time
 i = 1;                       % Counter
 
 % for j = 1:(floor(tNN(end))-(windowlength))/increment

@@ -37,17 +37,21 @@ if nargin < 4
     error('Wrong number of input parameters');
 end
 if nargin < 5 || isempty(windows_all)
-    windows_all = 0;   
+    windows_all = tNN(1,1);   
 end
 if isempty(sqi) 
-     sqi(:,1) = tNN;
+     sqi(:,1) = tNN- tNN(1,1);
      sqi(:,2) = ones(length(tNN),1);
 end
 % Set Defaults
-
+tNN = tNN - tNN(1,1);
+sqi(:,1) = sqi(:,1) - sqi(1,1);
 
 if isempty(HRVparams.MSE.windowlength)
     windowlength = length(NN);
+    if ~isempty(windows_all)&& (length(windowlength)>1)
+         windowlength = mean(diff(windows_all));
+    end
 else
     windowlength = HRVparams.MSE.windowlength*3600;
 end
@@ -84,8 +88,10 @@ for i_win = 1:length(windows_all)
         lowqual_idx = find(sqi_win(:,2) < threshold1);
 
         % If enough data has an adequate SQI, perform the calculations
-        if numel(lowqual_idx)/length(sqi_win(:,2)) < threshold2
-            mse(:,i_win) = ComputeMultiscaleEntropy(nn_win, m, r, maxTau, [], cg_moment,cg_method,constant_r);
+        if (numel(lowqual_idx)/length(sqi_win(:,2)) < threshold2)
+            if  ~isnan(sqi_win(:,2))
+                mse(:,i_win) = ComputeMultiscaleEntropy(nn_win, m, r, maxTau, [], cg_moment,cg_method,constant_r);
+            end
         end
         
 
