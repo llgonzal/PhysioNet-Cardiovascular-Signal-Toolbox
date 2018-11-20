@@ -40,7 +40,9 @@ fs = HRVparams.Fs;
 ann1 = ann1(:)./fs;
 ann2 = ann2(:)./fs;
 
-endtime = max([ann1(end), ann2(end)]);
+% endtime = max([ann1(end), ann2(end)]);
+% the code above may give different end times with different leads
+endtime = HRVparams.endtime;
 time = (1/HRVparams.Fs):(1/HRVparams.Fs):endtime;
 
 
