@@ -1,10 +1,10 @@
-function idxRRtoBeRemoved = FindSpikesInRR(RR, th)
+function idxRRtoBeRemoved = FindSpikesInRR(RR, th, N)
 % 
 % idxRRtoBeRemoved = FidnSpikesInRR(RR, th)
 %
 % OVERVIEW : Code used to clean RR intervals that change more than a given 
 % threshold (eg., th = 0.2 = 20%) with respect to the median value of the 
-% pervious 5 and next 5 RR intervals (using a forward-backward approach).
+% pervious N and next N RR intervals (using a forward-backward approach).
 %
 % INPUTS:
 %        RR : a single row of rr interval data in seconds
@@ -31,16 +31,17 @@ function idxRRtoBeRemoved = FindSpikesInRR(RR, th)
 %       the GNU (v3 or later) public license. See license file for
 %       more information
 %
-
+% changing it so the number of consecutive beats can be something other
+% than 5.
 
 if size(RR,1)>size(RR,2)
     RR = RR';
 end
-
+shift = round(N/2);
 % Forward search 
-FiveRR_MedianVal = medfilt1(RR,5); % compute as median RR(-i-2: i+2)
+FiveRR_MedianVal = medfilt1(RR,N); % compute as median RR(-i-2: i+2)
 % shift of three position to aligne with to corresponding RR 
-FiveRR_MedianVal = [RR(1:5) FiveRR_MedianVal(3:end-3)];
+FiveRR_MedianVal = [RR(1:N) FiveRR_MedianVal(shift:end-shift)];
 rr_above_th = find((abs(RR-FiveRR_MedianVal)./FiveRR_MedianVal)>=th);
 
 RR_forward = RR;
@@ -50,9 +51,9 @@ RR_forward(rr_above_th) = NaN;
 % Backward search 
 RRfilpped = fliplr(RR);
 
-FiveRR_MedianVal = medfilt1(RRfilpped,5); % compute as median RR(-i-2: i+2)
+FiveRR_MedianVal = medfilt1(RRfilpped,N); % compute as median RR(-i-2: i+2)
 % shift of three position to aligne with to corresponding RR 
-FiveRR_MedianVal = [RRfilpped(1:5) FiveRR_MedianVal(3:end-3)];
+FiveRR_MedianVal = [RRfilpped(1:N) FiveRR_MedianVal(shift:end-shift)];
 rr_above_th = find(abs(RRfilpped-FiveRR_MedianVal)./FiveRR_MedianVal>=th);
 rr_above_th = sort(length(RR)-rr_above_th+1);
 

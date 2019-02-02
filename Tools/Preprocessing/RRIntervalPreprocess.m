@@ -138,7 +138,8 @@ end
 
 % 6. Find RR Over Given Percentage Change 
 perLimit = HRVparams.preprocess.per_limit;
-idxRRtoBeRemoved = FindSpikesInRR(rr, perLimit); 
+N = HRVparams.preprocess.N;
+idxRRtoBeRemoved = FindSpikesInRR(rr, perLimit,N); 
 
 % 7. Find Long Running Outliers
 
@@ -185,6 +186,7 @@ switch HRVparams.preprocess.method_outliers
     case 'lin'
         NN_Outliers = interp1(time,rr,time,'linear','extrap'); 
         t_Outliers = time;
+
     case 'rem'
         NN_Outliers = rr;
         NN_Outliers(idx_outliers) = [];
@@ -196,7 +198,7 @@ switch HRVparams.preprocess.method_outliers
         t_Outliers = time;
         t_Outliers(idx_outliers) = [];
 end
-
+figures
 if figures
     figure;
     plot(time,rr_original,t_Outliers,NN_Outliers);
