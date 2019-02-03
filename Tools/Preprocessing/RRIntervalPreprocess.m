@@ -198,7 +198,7 @@ switch HRVparams.preprocess.method_outliers
         t_Outliers = time;
         t_Outliers(idx_outliers) = [];
 end
-figures
+
 if figures
     figure;
     plot(time,rr_original,t_Outliers,NN_Outliers);

@@ -1,4 +1,4 @@
-function [HRVout, ResultsFileName ] = Main_HRV_Analysis(InputSig,t,InputFormat,HRVparams,subID,ann,sqi,varargin)
+function [HRVout, ResultsFileName, HRVtitle ] = Main_HRV_Analysis(InputSig,t,InputFormat,HRVparams,subID,ann,sqi,varargin)
 
 %  ====== HRV Toolbox for PhysioNet Cardiovascular Signal Toolbox =========
 %
@@ -72,7 +72,6 @@ function [HRVout, ResultsFileName ] = Main_HRV_Analysis(InputSig,t,InputFormat,H
 %       the GNU (v3 or later) public license. See license file for
 %       more information
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
-clc;
 
 if nargin < 4
     error('Wrong number of input arguments')
@@ -185,8 +184,10 @@ try
     end
     
     % Generates Output - Never comment out
-    ResultsFileName.HRV = SaveHRVoutput(subID,WinIdxs,HRVout,HRVtitle, [],HRVparams, tNN, NN);
-    
+    % well it keeps crashing so never say never
+%     ResultsFileName.HRV = SaveHRVoutput(subID,WinIdxs,HRVout,HRVtitle, [],HRVparams, tNN, NN);
+    ResultsFileName = 'Results to file has been commented out';    
+
     % 8. Multiscale Entropy (MSE)
     if HRVparams.MSE.on 
         try
