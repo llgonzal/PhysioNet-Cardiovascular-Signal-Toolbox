@@ -49,9 +49,12 @@ RR_forward(rr_above_th) = NaN;
 
 
 % Backward search 
-RRfilpped = fliplr(RR);
+ RRfilpped = fliplr(RR);
+% RRfilpped = fliplr(RR_forward);
 
 FiveRR_MedianVal = medfilt1(RRfilpped,N); % compute as median RR(-i-2: i+2)
+% FiveRR_MedianVal = medfilt1(RRfilpped,N,'omitnan'); % compute as median RR(-i-2: i+2)
+
 % shift of three position to aligne with to corresponding RR 
 FiveRR_MedianVal = [RRfilpped(1:N) FiveRR_MedianVal(shift:end-shift)];
 rr_above_th = find(abs(RRfilpped-FiveRR_MedianVal)./FiveRR_MedianVal>=th);
